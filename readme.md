@@ -76,3 +76,7 @@ Pass MAC address as GET parameter to obtain information as to whether the screen
 - [ ] Compute better delay time instead of always returning 30s (i.e. 30000ms) fixed delay
 - [ ] Write website to allow easier settings/interface with API
 - [ ] Display BMP on website
+
+## Example display
+
+![Bus route 132](https://raw.githubusercontent.com/Muxelmann/mvgframe/master/web/CC50E30AC89C-departures.bmp)
