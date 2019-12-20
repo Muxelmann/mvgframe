@@ -1,12 +1,29 @@
 # MVGframe
 
-A project to interface an [ESP8266](https://www.waveshare.com/wiki/E-Paper_ESP8266_Driver_Board) with a 7.5inch e-Paper display ([black-and-white](https://www.waveshare.com/wiki/7.5inch_e-Paper_HAT), [black-white-red](https://www.waveshare.com/wiki/7.5inch_e-Paper_HAT_(B)) or [black-white-yellow](https://www.waveshare.com/wiki/7.5inch_e-Paper_HAT_(C))) by Waveshare for displaying a [MVG](https://www.mvg.de/) (Munich public transport) timetable.
+This project displays the [MVG](https://www.mvg.de/) (Munich public transport) timetable on a small eInk display in a picture frame.
 
-Run by calling
+Although I first wrote my own interface to acquire data from MVG, this project now uses the [MVG-API](https://github.com/leftshift/python_mvg_api) repo by *leftshift*. It is still maintained / updated and easy to use.
+
+### 1. Requirements
+
+- [ESP8266](https://www.waveshare.com/wiki/E-Paper_ESP8266_Driver_Board)
+- 7.5inch e-Paper display by Waveshare, e.g:
+ - [black-and-white](https://www.waveshare.com/wiki/7.5inch_e-Paper_HAT)
+ - [black-white-red](https://www.waveshare.com/wiki/7.5inch_e-Paper_HAT_(B))
+ - [black-white-yellow](https://www.waveshare.com/wiki/7.5inch_e-Paper_HAT_(C))
+- [RIBBA Frame](https://www.ikea.com/de/de/p/ribba-rahmen-weiss-70378414/) from IKEA
+
+### 2. Server
+
+A Raspberry Pi or any PC will do. Run the server code (located in `web`) with:
 
 ```sh
 python3 main.py
 ```
+
+### 3. ESP
+
+Flash the project in `esp` to the ESP8266, making sure it is directed to the server's IP. **Done!**
 
 ## API overivew
 
