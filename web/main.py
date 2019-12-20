@@ -59,15 +59,15 @@ def updateData(macAddress, screen):
         departure_destination = " ".join([d for d in departure["destination"].split(" ") if len(d) > 1])
 
         # Removing the "U" and "S" from the end of the destination
-        departures_display.append([departure_time + departure_delay, departure_destination])
+        departures_display.append([departure_time, departure_delay, departure_destination])
         i += 1
 
-    departures_display.sort(key=lambda x: x[0])
+    departures_display.sort(key=lambda x: x[0] + x[1])
     i = 0
     for departure in departures_display:
-        departure_time_str = datetime.fromtimestamp(departure[0]).strftime("%H:%M")
+        departure_time_str = datetime.fromtimestamp(departure[0] + departure[1]).strftime("%H:%M")
         draw.text((xOffset, yOffset + font_site*1.1*i), departure_time_str, 0, font=font_bold)
-        draw.text((xOffset+130, yOffset+font_site*1.1*i), departure[1], 0, font=font)
+        draw.text((xOffset+130, yOffset+font_site*1.1*i), departure[2], 0, font=font)
         i += 1
 
     if len(departures) == 0:
