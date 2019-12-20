@@ -50,9 +50,16 @@ def updateData(macAddress, screen):
         if len(stationFilter) > 0 and departure["label"] not in stationFilter:
             continue
 
-        # if len(stationFilter) == 0 or (len(stationFilter) > 0 and departure["label"] in stationFilter):
-        departure_time = datetime.fromtimestamp(departure["departureTime"] / 1000).strftime("%H:%M")
-        draw.text((xOffset, yOffset + font_site*1.1*i), departure_time, 0, font=font_bold)
+        # continue if departure has been canceled
+        if departure["cancelled"]:
+            continue
+
+        # get the delay and add to the (planned) departure time
+        delay_time = departure["delay"] * 60 if "delay" in departure.keys() else 0
+        departure_time = departure["departureTime"] / 1000
+
+        departure_time_str = datetime.fromtimestamp(delay_time + departure_time).strftime("%H:%M")
+        draw.text((xOffset, yOffset + font_site*1.1*i), departure_time_str, 0, font=font_bold)
         departure_destination = departure["destination"]
         draw.text((xOffset+130, yOffset+font_site*1.1*i), departure_destination, 0, font=font)
         i += 1
