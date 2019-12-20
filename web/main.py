@@ -21,8 +21,6 @@ def updateData(macAddress, screen):
 
     station_id = mvg_api.get_id_for_station(stationName)
     departures = mvg_api.get_departures(station_id)
-    for i in range(len(departures)):
-        departures[i]["destination"] = " ".join([d for d in departures[i]["destination"].split(" ") if len(d) > 1])
 
     img = Image.new("1", (screen["screen"]["width"], screen["screen"]["height"]))
     draw = ImageDraw.Draw(img)
@@ -41,6 +39,7 @@ def updateData(macAddress, screen):
     font_bold = ImageFont.truetype(os.path.join(fonts_path, 'EXCITE_B.otf'), font_site)
 
     max_departures = 7
+    departures_display = []
     i = 0
     for departure in departures:
         if i >= max_departures:
@@ -55,14 +54,18 @@ def updateData(macAddress, screen):
             continue
 
         # get the delay and add to the (planned) departure time
-        delay_time = departure["delay"] * 60 if "delay" in departure.keys() else 0
-        departure_time = departure["departureTime"] / 1000
+        departure_delay = departure["delay"] * 60.0 if "delay" in departure.keys() else 0.0
+        departure_time = departure["departureTime"] / 1000.0
+        departure_destination = " ".join([d for d in departure["destination"].split(" ") if len(d) > 1])
 
-        departure_time_str = datetime.fromtimestamp(delay_time + departure_time).strftime("%H:%M")
-        draw.text((xOffset, yOffset + font_site*1.1*i), departure_time_str, 0, font=font_bold)
-        departure_destination = departure["destination"]
-        draw.text((xOffset+130, yOffset+font_site*1.1*i), departure_destination, 0, font=font)
+        departures_display.append([departure_time + departure_delay, departure_destination])
         i += 1
+
+    departures_display.sort(key=lambda x: x[0])
+    for departure in departures_display:
+        departure_time_str = datetime.fromtimestamp(departure[0]).strftime("%H:%M")
+        draw.text((xOffset, yOffset + font_site*1.1*i), departure_time_str, 0, font=font_bold)
+        draw.text((xOffset+130, yOffset+font_site*1.1*i), departure[1], 0, font=font)
 
     if len(departures) == 0:
         draw.text((xOffset, yOffset), "Nachtruhe", 0, font=font)
