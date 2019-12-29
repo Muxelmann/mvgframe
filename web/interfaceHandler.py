@@ -9,12 +9,16 @@ class InterfaceHandler(object):
 
     def getReplyContent(self):
         print(self._interfaceResource)
-        interfaceType = self._interfaceResource.split(".")[1] if len(self._interfaceResource.split(".")) > 1 else "html"
+        resourceSuffix = self._interfaceResource.split(".")[-1] if len(self._interfaceResource.split(".")) > 1 else "html"
 
         if not os.path.exists(self._interfaceResource):
             self._replyCode = 404
             self._replyType = "text/html"
-            return "404 Page not found"
+            f = open("interface/404.html", "rb")
+            data = f.read()
+            f.close()
+            print("404 ({})".format(self._interfaceResource))
+            return data
         else:
             self._replyCode = 200
 
@@ -22,8 +26,8 @@ class InterfaceHandler(object):
         data = f.read()
         f.close()
 
-        if interfaceType in ["html", "css"]:
-            self._replyType = "text/" + interfaceType + "; charset=utf-8"
+        if resourceSuffix in ["html", "css", "js"]:
+            self._replyType = "text/" + resourceSuffix + "; charset=utf-8"
             data = data.decode("utf-8")
             
             if "<!--#SCREEN_DATA#-->" in data:
@@ -32,8 +36,19 @@ class InterfaceHandler(object):
                 data = data.replace("<!--#SCREEN_DATA#-->", pre)
             return data
 
-        if interfaceType in ["png", "jpg", "bmp"]:
-            self._replyType = "image/" + interfaceType
+        if resourceSuffix in ["png", "jpg", "bmp"]:
+            self._replyType = "image/" + resourceSuffix
+            return data
+
+        # special suffixes
+        mimeDict = {
+            "map": "application/json",
+            "ttf": "application/octet-stream",
+            "woff": "font/woff",
+            "woff2": "font/woff2"
+        }
+        if resourceSuffix in mimeDict.keys():
+            self._replyType = mimeDict[resourceSuffix]
             return data
 
 
