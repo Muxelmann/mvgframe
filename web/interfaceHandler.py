@@ -5,6 +5,7 @@ class InterfaceHandler(object):
 
     def setInterfaceResource(self, interfaceResource):
         self._interfaceResource = interfaceResource[1:] if len(interfaceResource[1:]) > 0 else "interface.html"
+        self._interfaceResource = "interface/" + self._interfaceResource
 
     def getReplyContent(self):
         print(self._interfaceResource)
@@ -21,8 +22,8 @@ class InterfaceHandler(object):
         data = f.read()
         f.close()
 
-        if interfaceType == "html":
-            self._replyType = "text/html; charset=utf-8"
+        if interfaceType in ["html", "css"]:
+            self._replyType = "text/" + interfaceType + "; charset=utf-8"
             data = data.decode("utf-8")
             
             if "<!--#SCREEN_DATA#-->" in data:
@@ -34,6 +35,10 @@ class InterfaceHandler(object):
         if interfaceType in ["png", "jpg", "bmp"]:
             self._replyType = "image/" + interfaceType
             return data
+
+
+        print("unknown file: {}".format(self._interfaceResource))
+        return ""
 
     def getReplyType(self):
         return self._replyType
