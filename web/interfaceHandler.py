@@ -12,7 +12,6 @@ class InterfaceHandler(object):
         self._interfaceArgs = interfaceArgs
 
     def getReplyContent(self):
-        print(self._interfaceResource)
         resourceSuffix = self._interfaceResource.split(".")[-1] if len(self._interfaceResource.split(".")) > 1 else "html"
 
         if not os.path.exists(self._interfaceResource):
