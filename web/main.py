@@ -40,6 +40,7 @@ class ESPServerHandler(BaseHTTPRequestHandler):
         else:
             interfaceHandler = InterfaceHandler()
             interfaceHandler.setInterfaceResource(self.path)
+            interfaceHandler.setInterfaceArgs(getArgs)
             reply_content = interfaceHandler.getReplyContent()
             reply_type = interfaceHandler.getReplyType()
             reply_code = interfaceHandler.getReplyCode()
