@@ -36,18 +36,15 @@ class ESPServerHandler(BaseHTTPRequestHandler):
             reply_type = "text/html"
             reply_code = 200
         
+        # otherwise interface query
         else:
-        
-            # # Error message
-            # self.send_response(404)
-            # reply_content += "404 page not found"
-
             interfaceHandler = InterfaceHandler()
             interfaceHandler.setInterfaceResource(self.path)
             reply_content = interfaceHandler.getReplyContent()
             reply_type = interfaceHandler.getReplyType()
             reply_code = interfaceHandler.getReplyCode()
 
+        # respond with reply content
         self.send_response(reply_code)
         self.send_header("Content-type", reply_type)
         self.send_header("Content-Length","{}".format(len(reply_content)))
