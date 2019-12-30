@@ -124,21 +124,23 @@ class ApiHandler(object):
         else:
             macAddress = self._apiArgs["macAddress"]
 
+        returnVal = "<br><br><script type='text/javascript'>self.close();</script>" if "isInterfaceCall" in self._apiArgs.keys() else ""
+
         # Setup functions
         if self._apiFunction == "setScreenInfo":
             if not all(x in self._apiArgs.keys() for x in ["width", "height"]):
                 print("setScreenInfo requires args: width and height")
-                return "0"
+                return "0" + returnVal
 
             width = self._apiArgs["width"]
             height = self._apiArgs["height"]
             screens.setScreenInfo(macAddress, width, height)
-            return "1"
+            return "1" + returnVal
 
         if self._apiFunction == "setScreenColor":
             if not all(x in self._apiArgs.keys() for x in ["isColor"]):
                 print("setScreenColor requires arg: isColor")
-                return "0"
+                return "0" + returnVal
             
             isColor = int(self._apiArgs["isColor"]) > 0
             screens.setScreenColor(macAddress, isColor)
@@ -147,31 +149,31 @@ class ApiHandler(object):
         if self._apiFunction == "setFrameInfo":
             if not all(x in self._apiArgs.keys() for x in ["xOffset", "yOffset", "width", "height"]):
                 print("setFrameInfo requires args: xOffset, yOffset, width and height")
-                return "0"
+                return "0" + returnVal
 
             xOffset = self._apiArgs["xOffset"]
             yOffset = self._apiArgs["yOffset"]
             width = self._apiArgs["width"]
             height = self._apiArgs["height"]
             screens.setFrameInfo(macAddress, xOffset, yOffset, width, height)
-            return "1"
+            return "1" + returnVal
 
         if self._apiFunction == "setStation":
             if not all(x in self._apiArgs.keys() for x in ["stationName"]):
                 print("setStation requires args: stationName and (optionally) labelFilter")
-                return "0"
+                return "0" + returnVal
             
             stationName = self._apiArgs["stationName"]
             labelFilter = self._apiArgs["labelFilter"].split(",") if "labelFilter" in self._apiArgs.keys() else []
             screens.setStation(macAddress, stationName, labelFilter)
-            return "1"
+            return "1" + returnVal
 
 
         # Update functions
         if self._apiFunction == "updateData":
             screen = screens.getScreenForMacAddress(macAddress)
             updateData(macAddress, screen)
-            return "1"
+            return "1" + returnVal
         
         if self._apiFunction == "getBmpData":
             self._apiArgs["segmentsCount"] = self._apiArgs["segmentsCount"] if "segmentsCount" in self._apiArgs.keys() else "1"
@@ -182,10 +184,10 @@ class ApiHandler(object):
                 return getBmpData(macAddress, int(self._apiArgs["segmentsCount"]), int(self._apiArgs["segmentNumber"]))
         
         if self._apiFunction == "getDelayTime":
-            return "30000"
+            return "30000" + returnVal
         
         if self._apiFunction == "willReceiveColorData":
-            return "1" if screens.isScreenColor(macAddress) else "0"
+            return ("1" if screens.isScreenColor(macAddress) else "0") + returnVal
         
         print("unknown function: {}".format(self._apiFunction))
-        return ""
+        return "" + returnVal
