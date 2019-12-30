@@ -81,7 +81,7 @@ class InterfaceHandler(object):
 
                 screenData = screenData.replace("<!--#MAC_ADDRESS#-->", macAddress)
                 screenData = screenData.replace("<!--#SCREEN_CODE-->", pprint.pformat(screens[macAddress]))
-                screenData = screenData.replace("<!--#SCREEN_IMAGE#-->", "../../" + macAddress.replace(":", "") + "-departures.bmp")
+                screenData = screenData.replace("<!--#SCREEN_IMAGE#-->", macAddress.replace(":", "") + "-departures.bmp")
                 data = data.replace("<!--#SCREEN_DATA#-->", screenData)
             else:
                 data = data.replace("<!--#SCREEN_DATA#-->", "Chose")
