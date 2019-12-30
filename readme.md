@@ -94,6 +94,6 @@ Pass MAC address as GET parameter to obtain information as to whether the screen
 - [ ] Write website to allow easier settings/interface with API
 - [ ] Display BMP on website
 
-## Example display
+## Interface : *build in progress*
 
-![Bus route 132](https://raw.githubusercontent.com/Muxelmann/mvgframe/master/web/CC50E30AC89C-departures.bmp)
+![Interface](https://raw.githubusercontent.com/Muxelmann/mvgframe/master/web/sample.png)
